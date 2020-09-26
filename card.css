@@ -1,0 +1,124 @@
+:root {
+  --card-width: 267px;
+  --card-height: 396px;
+  --layer-step-1: 10px;
+  --layer-step-2: 20px;
+  --layer-step-3: 30px;
+  --border-width: 50px;
+  --perspective: 400px;
+}
+
+@media (min-height: 800px) {
+  :root {
+    --perspective: 600px;
+    --card-width: 534px;
+    --card-height: 792px;
+    --layer-step-1: 20px;
+    --layer-step-2: 40px;
+    --layer-step-3: 60px;
+    --border-width: 100px;
+  }
+}
+
+.scene {
+  perspective: var(--perspective);
+  transform-style: preserve-3d;
+  perspective-origin: center;
+  transform-origin: 50% 50%;
+  width: var(--card-width);
+  height: var(--card-height);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: 
+    translateX(-50%) 
+    translateY(-50%) 
+    rotateX(var(--rotation-x, 0)) 
+    rotateY(var(--rotation-y, 0));
+}
+
+@media (hover: none) {
+  .scene {
+    transition: transform 2s;
+  }
+}
+
+.card {
+  transform-style: preserve-3d;
+  width: var(--card-width);
+  height: var(--card-height);
+  position: relative;
+  backface-visibility: visible;
+  perspective-origin: center;
+  transform-origin: 50% 50%;
+}
+
+.card::after {
+  content: "";
+  display: block;
+  height: var(--card-height);
+  width: var(--border-width);
+  background-color: #ee0;
+  
+  position: absolute;
+  top: 0;
+  left: 100%;
+
+  transform-origin: 0 50%;
+  transform: rotateY(-90deg) translateX(calc(-1 * var(--layer-step-1)));
+  backface-visibility: visible;
+}
+
+.card::before {
+  content: "";
+  display: block;
+  height: var(--card-height);
+  width: var(--border-width);
+  background-color: #ee0;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  transform-origin: 0 50%;
+  transform: rotateY(-90deg) translateX(calc(-1 * var(--layer-step-1)));
+  backface-visibility: visible;
+}
+
+.card__layer img,
+.card__layer {
+  width: var(--card-width);
+  height: var(--card-height);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  
+  backface-visibility: visible;
+  perspective-origin: center;
+  transform-origin: 50% 50%;
+}
+
+.card__layer--3 {
+  transform: translateZ(var(--layer-step-3));
+  z-index: 4;
+}
+
+.card__layer--2 {
+  transform: translateZ(var(--layer-step-2));
+  z-index: 3;
+  filter: brightness(.97);
+}
+
+.card__layer--1 {
+  transform: translateZ(var(--layer-step-1));
+  z-index: 2;
+  filter: brightness(.94);
+}
+
+.card__layer--0 {
+  filter: brightness(.91);
+}
